@@ -42,7 +42,8 @@
     - 漏洞产生方式：这个高权限服务在接受指令时，没有进行充分的验证（例如，没有验证调用者程序的数字签名、路径或完整性），或者其指令接口本身存在代码执行漏洞（如缓冲区溢出）。
     - 利用方法：攻击者以一个普通用户的身份，编写一个程序向这个高权限服务的接口发送精心构造的恶意指令。服务接收到指令后，会无条件地以高权限执行攻击者想要的操作（例如，启动一个cmd.exe），从而绕过UAC。著名的 "UACME" 项目中很多绕过方法都属于此类，它们利用了大量合法软件（如Intel、NVIDIA、Citrix等）的此类服务。
     - 命名管道
-        + 相关工具：pipelist,PipeViewer,ProcessExplore
+        + 相关工具：pipelist,PipeViewer,Pipetap（https://github.com/sensepost/pipetap）
+        + 验证权限： ``accesschk.exe -v \\.\pipe\{FD350510-988F-45DE-9AD3-FC6C8507CB30}``
 
     - RPC接口
         + 相关工具: RpcView64（https://github.com/silverf0x/RpcView）

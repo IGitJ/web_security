@@ -32,3 +32,7 @@ URL绕过
 + 空格编码
     - ``/api/v5/users/9`` -> ``/api/v5/users/%209``
     - 参考： ``srcPython\src\payloads\403_url_payloads.txt``
+
+PATCH绕过
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ``GET /api/v5/users/9`` -> ``PATCH /api/v5/users/9``

@@ -232,6 +232,10 @@ js信息搜集-URL
 			git clone https://github.com/r3dcl1ff/hanz0
 			cd hanz0 && go build hanz0.go
 	- ``cat js.txt | ./hanz0 -s High,Medium``
++ 接口搜索
+	- 控制台输入（输出到页面）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){document.write(t+"<br>")})}setTimeout(writeResults,3e3);})();``
+	- 控制台输入（输出到控制台）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){console.log(t)})}setTimeout(writeResults,3e3);})();``
+	- 搜索框输入： ``(['"])(?:\/(?:api|v[0-9]+))(?:\/[^'"\s?#]+)+\1`` ,注意勾选使用正则表达式。
 
 js信息搜集-插件
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
