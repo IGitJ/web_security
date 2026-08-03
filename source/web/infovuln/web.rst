@@ -144,6 +144,10 @@ URL 收集
 
 隐藏参数扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 优先需要参数模糊测试场景
+	- 403禁止页面以及重定向页面
+	- 登录页面，类似login.php、login.jsp、login.asp等
+	- 空白页面
 + Arjun
 	- 项目地址： ``https://github.com/s0md3v/Arjun``
 	- 安装： ``pip3 install arjun``
@@ -156,6 +160,7 @@ URL 收集
 		+ 命令： ``paramspider -d example.com``
 		+ 文件： ``paramspider -l domains.txt``
 		+ FUZZ (default: "FUZZ"): ``paramspider -d example.com -p '"><h1>reflection</h1>'``
++ gap-burpsuite
 
 其它工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

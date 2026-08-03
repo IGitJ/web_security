@@ -10,4 +10,5 @@ SRC挖掘思路
    frame
    skill
    403bypass
+   upgrade
    red

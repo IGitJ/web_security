@@ -42,6 +42,7 @@
 + 图形验证码可识别（SRC不收）
 + 图形验证码随机值可控
 + 图形验证码返回到前端
++ json改为表单绕过验证码： ``Content-Type： application/json`` 为 ``application/x-www-form-urlencoded`` 
 
 短信验证码
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

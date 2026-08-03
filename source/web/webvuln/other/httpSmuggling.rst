@@ -109,6 +109,12 @@ TE-TE指前后端服务器都处理 ``Transfer-Encoding`` 请求头，但是在�
     0\r\n
     \r\n
 
+相关工具
+----------------------------------------
+- smuggler 
+    + 项目地址: ``https://github.com/defparam/smuggler``
+    + smuggler -u http://example.com/ -p 80 -m CLTE -v
+
 防御
 ----------------------------------------
 - 禁用后端连接重用

