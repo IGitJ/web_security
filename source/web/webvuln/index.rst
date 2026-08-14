@@ -18,6 +18,8 @@
    fileread
    fileupload
    fileinclude
+   account
+   2route
    logic
    cloud
    xxe
