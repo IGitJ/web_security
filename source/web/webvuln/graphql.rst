@@ -225,6 +225,7 @@ GraphQL 是一种由Facebook于2012年开发并于2015年开源的数据查询�
 ::
 
     # 获取所有类型
+    
     query IntrospectionQuery {
         __schema {
         queryType { name }
@@ -232,6 +233,16 @@ GraphQL 是一种由Facebook于2012年开发并于2015年开源的数据查询�
         subscriptionType { name }
         types {
             ...FullType
+        }
+        directives {
+            name
+            description
+            args {
+            ...InputValue
+            }
+            onOperation
+            onFragment
+            onField
         }
         }
     }
@@ -248,6 +259,47 @@ GraphQL 是一种由Facebook于2012年开发并于2015年开源的数据查询�
         }
         type {
             ...TypeRef
+        }
+        isDeprecated
+        deprecationReason
+        }
+        inputFields {
+        ...InputValue
+        }
+        interfaces {
+        ...TypeRef
+        }
+        enumValues(includeDeprecated: true) {
+        name
+        description
+        isDeprecated
+        deprecationReason
+        }
+        possibleTypes {
+        ...TypeRef
+        }
+    }
+
+    fragment InputValue on __InputValue {
+        name
+        description
+        type { ...TypeRef }
+        defaultValue
+    }
+
+    fragment TypeRef on __Type {
+        kind
+        name
+        ofType {
+        kind
+        name
+        ofType {
+            kind
+            name
+            ofType {
+            kind
+            name
+            }
         }
         }
     }

@@ -276,6 +276,11 @@ js信息搜集-插件
 	- 搜索URL： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]+' -AllMatches | ForEach-Object { $_.Matches.Value }``
 	- 包含changyan的域名： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]*changyan[^\s''"]*' -AllMatches | ForEach-Object { $_.Matches.Value }``
 	- 包含特定关键词的数据： ``Get-ChildItem -Path "C:\Program Files (x86)\zhwk" -Recurse -Filter *.js | Select-String -Pattern 'appSecret' -AllMatches | ForEach-Object { $f=$_.Path;$l=$_.Line;foreach($m in $_.Matches){$s=[Math]::Max(0,$m.Index-30);$e=[Math]::Min($l.Length,$m.Index+$m.Length+30);Write-Host "$f : $($l.Substring($s,$e-$s))" } }``
++ nestle
+	- 说明： 利用正则表达式匹配并提取信息。
+	- 项目地址： ``https://github.com/tarunKoyalwar/nestle``
+	- 安装： ``go install github.com/tarunKoyalwar/nestle@latest``
+	- 命令： ``cat js-file.js | nestle -regex '(query|mutation)\s+[a-zA-Z]+[0-9]*[a-zA-Z]+(\([^(\(|\))]+\))*\s*[{:nested:}]'``
 
 综合扫描
 ----------------------------------------

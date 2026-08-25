@@ -160,8 +160,11 @@ WebSocket漏洞
 ~~~~~~~~~~~~~~~~
 + ``wsfuzzer``: 专门针对WebSocket的模糊测试工具
 + wsrepl
-    - 项目地址： ``https://github.com/doyensec/wsrepl``
-    - 命令： ``wsrepl -u URL``
+   - 项目地址： ``https://github.com/doyensec/wsrepl``
+   - 命令： ``wsrepl -u URL``
++ Websocat
+   - 项目地址： ``https://github.com/vi/websocat``
+   - 命令： ``websocat ws://example.com/socket``
 
 .. note::
    测试前请确保获得合法授权，遵守相关法律法规和测试范围约定。
