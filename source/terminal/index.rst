@@ -8,6 +8,7 @@
    window/index
    electron/index
    nw.js
+   cef
    linux/index
    android/index
    ios/index
