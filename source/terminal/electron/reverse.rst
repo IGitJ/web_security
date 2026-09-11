@@ -6,9 +6,35 @@ asar文件
 
 程序解包
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
-+ windows系统安装node.js
-+ 在其目录中执行：npm install asar -g
-+ asar e app.asar app //解压拿到源码
+- asar
+    + windows系统安装node.js
+    + 在其目录中执行： ``npm install asar -g``
+    + asar e app.asar app //解压拿到源码
+- asar-plus
+    + windows系统安装node.js
+    + 在其目录中执行： ``npm install asar-plus -g``
+    + 跳过那些需要从 app.asar.unpacked 目录读取的解包文件:  ``asar-plus e app.asar app_out -iu``
+    + 提取特定文件:  ``asar ef app.asar path/in/archive/file.js output_file.js"``
+- 原生提取
+    ::
+
+        const asar = require('@electron/asar');
+        const path = require('path');
+
+        // 关键：绕过 ASAR 检查，直接读取真实文件
+        process.noAsar = true;
+
+        const source = path.resolve('app.asar');
+        const dest = path.resolve('app_out');
+
+        try {
+        asar.extractAll(source, dest);
+        console.log('Extraction completed successfully.');
+        } catch (error) {
+        console.error('Extraction failed:', error.message);
+        }
+
+        node extract.js
 
 程序打包
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
