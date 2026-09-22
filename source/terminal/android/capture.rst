@@ -11,6 +11,15 @@
 	- 项目地址：网盘下载
 	- 支持：Android 5.0及以上
 	- 原理：基于Android的 **VPNService** 创建本地虚拟专用网络，HTTP Canary通过这个VPN，充当 **代理** 与真实服务器通信（所以同样需要安装证书），从而捕获手机上的网络流量。
++ Reqable
+	- 项目地址： ``https://github.com/reqable/reqable-app``
+	- 支持：httpcanary升级版，支持手机端和PC端抓包，支持HTTPS解密，支持HTTP/2，支持WebSocket，支持TCP/UDP流量抓取。
+	- 使用方法：
+		- 手机端安装Reqable，选择 **协同模式** ，出现添加设备。
+		- PC端安装Reqable，点击 **手机协同配置** ，出现二维码，手机端扫描。
+		- PC端点击菜单中安装根证书到安卓端，证书安装完毕后，在手机 App 中点击调试按钮，启动 VPN 服务即可。
+		- 手机端点调试页面，就是本机抓包；需要点电脑端设备，显示设备已连接，然后PC端才能看到数据包。
+		- 注意：两端版本需要一致。
 
 证书安装
 -----------------------------------------
@@ -48,21 +57,21 @@
 	- postern、Super Proxy等VPN工具将流量封装为标准的代理协议，转发给代理服务器。
 + 内核转发类
 	- iptables:仅负责流量转发，不负责协议转换。
-	- readsocks：协议翻译器，负责将接受的流量转换成SOCKS或HTTPS代理协议。
+	- redsocks：协议翻译器，负责将接受的流量转换成SOCKS或HTTPS代理协议。
 	- 两者需要配合使用，才能将流量转发给代理服务器。
 	- 实现方法
-		+ burp设置 **支持隐形代理** ,可以接受直接转发的流量，而不需要协议转发器。
+		+ burp设置 **支持隐形代理** ,可以 **接受直接转发的流量** ，而 **不需要** 协议转发器。
 		+ 获取目标应用UID： ``adb shell "su -c 'ps -A|grep "ifly"'"`` ，第一列就是UID
 		+ 转发流量： ``adb shell "su -c 'iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner <UID> -j DNAT --to-destination <burp-ip>:<burp-port>'"``
 		+ 清除规则： ``adb shell "su -c 'iptables -t nat -F'"``
 		+ 查看规则： ``adb shell "su -c 'iptables -t nat -L OUTPUT -v -n'"``
-		+ 协议转换：使用readsocks将流量转换成SOCKS或HTTPS代理协议，转发给burp。
+		+ 协议转换：使用redsocks将流量转换成SOCKS或HTTPS代理协议，转发给burp。
 			::
 
-				readsocks配置文件示例：
+				redsocks配置文件示例：
 				[general]
 				log_level = "info"
-				log_file = "readsocks.log"
+				log_file = "redsocks.log"
 
 				[socks5]
 				type = "socks5"
