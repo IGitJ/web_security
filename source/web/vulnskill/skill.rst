@@ -76,6 +76,7 @@ CSRF
     - 无同源策略：cookie外带等。
 + 账号绑定
     - 通过账号绑定功能（GET请求直接发送URL/POST请求可以生成以html网页），将绑定URL发送给受害者，当受害者点击后就将自己的SSO账号（如微信，百度等）绑定到了受害者账号。
++ 账号锁死
 + json格式跨域的两种情况
     - 没有严格校验Content-Type头：application/json，导致CSRF攻击。
     - 存在cors配置不当：允许任意域名访问，导致CSRF攻击。
