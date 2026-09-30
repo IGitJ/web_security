@@ -70,6 +70,14 @@ payload
 	利用泛域名解析
 	192.168.0.1.nip.io
 	192.168.0.1.sslip.io
+	https://64.176.22.9.nip.io 	64.176.22.9 	dot separators, nip.io website mirror (IPv4)
+	https://64-176-22-9.nip.io 	64.176.22.9 	dash separators, nip.io website mirror (IPv4)
+	www.192.168.0.1.nip.io 		192.168.0.1 	subdomain
+	www.192-168-0-1.nip.io 		192.168.0.1 	subdomain + dashes
+	https://www-78-46-204-247.nip.io 	78.46.204.247 	dash prefix, nip.io website mirror (IPv4)
+	--1.nip.io [dig] 	::1 	IPv6 — always use dashes, never dots
+	https://2a01-4f8-c17-b8f--2.nip.io 	2a01:4f8:c17:b8f::2 	nip.io website mirror (IPv6)
+	https://40B01609.nip.io/ 	64.176.22.9 	nip.io website mirror (hexadecimal notation)
 	
 	http://0.0.0.0
 	http://127.1.1.1
